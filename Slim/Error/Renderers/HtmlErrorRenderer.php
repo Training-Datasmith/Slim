@@ -49,9 +49,8 @@ class HtmlErrorRenderer extends AbstractErrorRenderer
         $html .= sprintf('<div><strong>Line:</strong> %s</div>', $exception->getLine());
 
         $html .= '<h2>Trace</h2>';
-        $html .= sprintf('<pre>%s</pre>', htmlentities($exception->getTraceAsString()));
 
-        return $html;
+        return $html . sprintf('<pre>%s</pre>', htmlentities($exception->getTraceAsString()));
     }
 
     public function renderHtmlBody(string $title = '', string $html = ''): string

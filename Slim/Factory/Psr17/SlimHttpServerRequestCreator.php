@@ -43,7 +43,7 @@ class SlimHttpServerRequestCreator implements ServerRequestCreatorInterface
                 $decoratedServerRequest = new static::$serverRequestDecoratorClass($request)
                 ) instanceof ServerRequestInterface)
         ) {
-            throw new RuntimeException(get_called_class() . ' could not instantiate a decorated server request.');
+            throw new RuntimeException(static::class . ' could not instantiate a decorated server request.');
         }
 
         return $decoratedServerRequest;

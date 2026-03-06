@@ -79,17 +79,11 @@ class App extends RouteCollectorProxy implements RequestHandlerInterface
         $this->middlewareDispatcher = $middlewareDispatcher;
     }
 
-    /**
-     * @return RouteResolverInterface
-     */
     public function getRouteResolver(): RouteResolverInterface
     {
         return $this->routeResolver;
     }
 
-    /**
-     * @return MiddlewareDispatcherInterface
-     */
     public function getMiddlewareDispatcher(): MiddlewareDispatcherInterface
     {
         return $this->middlewareDispatcher;
@@ -106,7 +100,6 @@ class App extends RouteCollectorProxy implements RequestHandlerInterface
     }
 
     /**
-     * @param MiddlewareInterface $middleware
      * @return App<TContainerInterface>
      */
     public function addMiddleware(MiddlewareInterface $middleware): self
@@ -119,8 +112,6 @@ class App extends RouteCollectorProxy implements RequestHandlerInterface
      * Add the Slim built-in routing middleware to the app middleware stack
      *
      * This method can be used to control middleware order and is not required for default routing operation.
-     *
-     * @return RoutingMiddleware
      */
     public function addRoutingMiddleware(): RoutingMiddleware
     {
@@ -135,12 +126,7 @@ class App extends RouteCollectorProxy implements RequestHandlerInterface
     /**
      * Add the Slim built-in error middleware to the app middleware stack
      *
-     * @param bool                 $displayErrorDetails
-     * @param bool                 $logErrors
-     * @param bool                 $logErrorDetails
-     * @param LoggerInterface|null $logger
      *
-     * @return ErrorMiddleware
      */
     public function addErrorMiddleware(
         bool $displayErrorDetails,
@@ -164,8 +150,6 @@ class App extends RouteCollectorProxy implements RequestHandlerInterface
      * Add the Slim body parsing middleware to the app middleware stack
      *
      * @param callable[] $bodyParsers
-     *
-     * @return BodyParsingMiddleware
      */
     public function addBodyParsingMiddleware(array $bodyParsers = []): BodyParsingMiddleware
     {
@@ -179,9 +163,6 @@ class App extends RouteCollectorProxy implements RequestHandlerInterface
      *
      * This method traverses the application middleware stack and then sends the
      * resultant Response object to the HTTP client.
-     *
-     * @param ServerRequestInterface|null $request
-     * @return void
      */
     public function run(?ServerRequestInterface $request = null): void
     {
@@ -200,9 +181,6 @@ class App extends RouteCollectorProxy implements RequestHandlerInterface
      *
      * This method traverses the application middleware stack and then returns the
      * resultant Response object.
-     *
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {

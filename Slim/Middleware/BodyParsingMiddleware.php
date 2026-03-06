@@ -96,7 +96,7 @@ class BodyParsingMiddleware implements MiddlewareInterface
 
     protected function registerDefaultBodyParsers(): void
     {
-        $this->registerBodyParser('application/json', static function ($input) {
+        $this->registerBodyParser('application/json', static function ($input): ?array {
             /** @var string $input */
             $result = json_decode($input, true);
 
@@ -107,14 +107,14 @@ class BodyParsingMiddleware implements MiddlewareInterface
             return $result;
         });
 
-        $this->registerBodyParser('application/x-www-form-urlencoded', static function ($input) {
+        $this->registerBodyParser('application/x-www-form-urlencoded', static function ($input): array {
             /** @var string $input */
             parse_str($input, $data);
 
             return $data;
         });
 
-        $xmlCallable = static function ($input) {
+        $xmlCallable = static function ($input): ?\SimpleXMLElement {
             /** @var string $input */
 
             $backup = self::disableXmlEntityLoader(true);

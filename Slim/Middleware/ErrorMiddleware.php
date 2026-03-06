@@ -121,10 +121,8 @@ class ErrorMiddleware implements MiddlewareInterface
 
     /**
      * Get default error handler
-     *
-     * @return ErrorHandler|callable
      */
-    public function getDefaultErrorHandler()
+    public function getDefaultErrorHandler(): callable
     {
         if ($this->defaultErrorHandler === null) {
             $this->defaultErrorHandler = new ErrorHandler(
