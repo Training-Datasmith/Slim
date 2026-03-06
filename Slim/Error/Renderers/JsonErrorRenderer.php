@@ -10,14 +10,14 @@ declare(strict_types=1);
 
 namespace Slim\Error\Renderers;
 
-use Slim\Error\AbstractErrorRenderer;
-use Throwable;
-
 use function get_class;
 use function json_encode;
 
 use const JSON_PRETTY_PRINT;
 use const JSON_UNESCAPED_SLASHES;
+
+use Slim\Error\AbstractErrorRenderer;
+use Throwable;
 
 /**
  * Default Slim application JSON Error Renderer

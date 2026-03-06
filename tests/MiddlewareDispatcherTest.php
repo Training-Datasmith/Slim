@@ -147,7 +147,7 @@ class MiddlewareDispatcherTest extends TestCase
             ['Callable', function (ServerRequestInterface $request, RequestHandlerInterface $handler) {
                 return $handler->handle($request);
             }],
-            ['MiddlewareInterfaceNotImplemented', 'MiddlewareInterfaceNotImplemented']
+            ['MiddlewareInterfaceNotImplemented', 'MiddlewareInterfaceNotImplemented'],
         ];
     }
 

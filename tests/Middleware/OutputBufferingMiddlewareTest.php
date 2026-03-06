@@ -12,12 +12,14 @@ namespace Slim\Tests\Middleware;
 
 use Exception;
 use InvalidArgumentException;
+
+use function ob_get_contents;
+
 use Psr\Http\Server\RequestHandlerInterface;
 use ReflectionProperty;
 use Slim\Middleware\OutputBufferingMiddleware;
-use Slim\Tests\TestCase;
 
-use function ob_get_contents;
+use Slim\Tests\TestCase;
 
 class OutputBufferingMiddlewareTest extends TestCase
 {
@@ -104,7 +106,7 @@ class OutputBufferingMiddlewareTest extends TestCase
     {
         $this->getResponseFactory();
         $middleware = (function ($request, $handler) {
-            echo "Test";
+            echo 'Test';
             $this->assertSame('Test', ob_get_contents());
             throw new Exception('Oops...');
         })->bindTo($this);

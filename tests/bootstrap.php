@@ -35,7 +35,7 @@ Override::apply($classLoader, [
         },
         'headers_sent' => function (): bool {
             return false;
-        }
+        },
     ],
     RouteCollector::class => [
         'is_readable' => function (string $file): bool {
@@ -43,6 +43,6 @@ Override::apply($classLoader, [
         },
         'is_writable' => function (string $path): bool {
             return stripos($path, 'non-writable-directory') === false;
-        }
-    ]
+        },
+    ],
 ]);

@@ -51,10 +51,10 @@ class ServerRequestCreatorFactory
         }
 
         throw new RuntimeException(
-            "Could not detect any ServerRequest creator implementations. " .
-            "Please install a supported implementation in order to use `App::run()` " .
-            "without having to pass in a `ServerRequest` object. " .
-            "See https://github.com/slimphp/Slim/blob/4.x/README.md for a list of supported implementations."
+            'Could not detect any ServerRequest creator implementations. ' .
+            'Please install a supported implementation in order to use `App::run()` ' .
+            'without having to pass in a `ServerRequest` object. ' .
+            'See https://github.com/slimphp/Slim/blob/4.x/README.md for a list of supported implementations.'
         );
     }
 

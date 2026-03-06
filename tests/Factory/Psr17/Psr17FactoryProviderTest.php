@@ -26,7 +26,6 @@ class Psr17FactoryProviderTest extends TestCase
         $this->assertSame([], Psr17FactoryProvider::getFactories());
     }
 
-
     /**
      * @runInSeparateProcess - Psr17FactoryProvider::setFactories breaks other tests
      */

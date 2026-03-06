@@ -10,22 +10,26 @@ declare(strict_types=1);
 
 namespace Slim;
 
+use function class_exists;
+
 use Closure;
+
+use function function_exists;
+use function is_callable;
+use function is_string;
+use function preg_match;
+
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
+
 use Psr\Http\Server\RequestHandlerInterface;
 use RuntimeException;
 use Slim\Interfaces\AdvancedCallableResolverInterface;
 use Slim\Interfaces\CallableResolverInterface;
 use Slim\Interfaces\MiddlewareDispatcherInterface;
 
-use function class_exists;
-use function function_exists;
-use function is_callable;
-use function is_string;
-use function preg_match;
 use function sprintf;
 
 /**

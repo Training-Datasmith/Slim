@@ -10,12 +10,14 @@ declare(strict_types=1);
 
 namespace Slim\Error\Renderers;
 
-use Slim\Error\AbstractErrorRenderer;
-use Throwable;
-
 use function get_class;
+
+use Slim\Error\AbstractErrorRenderer;
+
 use function sprintf;
 use function str_replace;
+
+use Throwable;
 
 /**
  * Default Slim application XML Error Renderer

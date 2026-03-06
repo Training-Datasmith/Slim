@@ -10,13 +10,14 @@ declare(strict_types=1);
 
 namespace Slim\Routing;
 
+use function rawurldecode;
+
 use RuntimeException;
 use Slim\Interfaces\DispatcherInterface;
 use Slim\Interfaces\RouteCollectorInterface;
 use Slim\Interfaces\RouteInterface;
-use Slim\Interfaces\RouteResolverInterface;
 
-use function rawurldecode;
+use Slim\Interfaces\RouteResolverInterface;
 
 /**
  * RouteResolver instantiates the FastRoute dispatcher

@@ -10,11 +10,12 @@ declare(strict_types=1);
 
 namespace Slim\Factory\Psr17;
 
+use function class_exists;
+
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
-use Slim\Interfaces\ServerRequestCreatorInterface;
 
-use function class_exists;
+use Slim\Interfaces\ServerRequestCreatorInterface;
 
 class SlimHttpServerRequestCreator implements ServerRequestCreatorInterface
 {
@@ -41,7 +42,7 @@ class SlimHttpServerRequestCreator implements ServerRequestCreatorInterface
         if (
             !((
                 $decoratedServerRequest = new static::$serverRequestDecoratorClass($request)
-                ) instanceof ServerRequestInterface)
+            ) instanceof ServerRequestInterface)
         ) {
             throw new RuntimeException(static::class . ' could not instantiate a decorated server request.');
         }

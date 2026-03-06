@@ -10,14 +10,14 @@ declare(strict_types=1);
 
 namespace Slim\Factory\Psr17;
 
+use function class_exists;
+
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use RuntimeException;
 use Slim\Interfaces\Psr17FactoryInterface;
-use Slim\Interfaces\ServerRequestCreatorInterface;
 
-use function class_exists;
-use function get_called_class;
+use Slim\Interfaces\ServerRequestCreatorInterface;
 
 abstract class Psr17Factory implements Psr17FactoryInterface
 {

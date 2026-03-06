@@ -10,15 +10,17 @@ declare(strict_types=1);
 
 namespace Slim\Tests\Middleware;
 
+use function is_string;
+
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use RuntimeException;
+
+use function simplexml_load_string;
+
 use Slim\Middleware\BodyParsingMiddleware;
 use Slim\Tests\TestCase;
-
-use function is_string;
-use function simplexml_load_string;
 
 class BodyParsingMiddlewareTest extends TestCase
 {
@@ -63,7 +65,6 @@ class BodyParsingMiddlewareTest extends TestCase
         return $request;
     }
 
-
     public static function parsingProvider()
     {
         return [
@@ -73,7 +74,7 @@ class BodyParsingMiddlewareTest extends TestCase
                 ['foo' => 'bar'],
             ],
             'json' => [
-                "application/json",
+                'application/json',
                 '{"foo":"bar"}',
                 ['foo' => 'bar'],
             ],

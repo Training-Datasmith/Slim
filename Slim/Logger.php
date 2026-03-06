@@ -10,11 +10,12 @@ declare(strict_types=1);
 
 namespace Slim;
 
+use function error_log;
+
 use Psr\Log\AbstractLogger;
 use Psr\Log\InvalidArgumentException;
-use Stringable;
 
-use function error_log;
+use Stringable;
 
 class Logger extends AbstractLogger
 {

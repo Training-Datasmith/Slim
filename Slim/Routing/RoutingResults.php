@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace Slim\Routing;
 
-use Slim\Interfaces\DispatcherInterface;
-
 use function rawurldecode;
+
+use Slim\Interfaces\DispatcherInterface;
 
 /** @api */
 class RoutingResults

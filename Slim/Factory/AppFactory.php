@@ -150,9 +150,9 @@ class AppFactory
         }
 
         throw new RuntimeException(
-            "Could not detect any PSR-17 ResponseFactory implementations. " .
-            "Please install a supported implementation in order to use `AppFactory::create()`. " .
-            "See https://github.com/slimphp/Slim/blob/4.x/README.md for a list of supported implementations."
+            'Could not detect any PSR-17 ResponseFactory implementations. ' .
+            'Please install a supported implementation in order to use `AppFactory::create()`. ' .
+            'See https://github.com/slimphp/Slim/blob/4.x/README.md for a list of supported implementations.'
         );
     }
 

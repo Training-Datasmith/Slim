@@ -11,19 +11,23 @@ declare(strict_types=1);
 namespace Slim\Tests\Error;
 
 use Exception;
+
+use function json_decode;
+use function json_encode;
+
 use ReflectionClass;
 use RuntimeException;
+
+use function simplexml_load_string;
+
 use Slim\Error\Renderers\HtmlErrorRenderer;
 use Slim\Error\Renderers\JsonErrorRenderer;
 use Slim\Error\Renderers\PlainTextErrorRenderer;
 use Slim\Error\Renderers\XmlErrorRenderer;
+
 use Slim\Exception\HttpException;
 use Slim\Tests\TestCase;
 use stdClass;
-
-use function json_decode;
-use function json_encode;
-use function simplexml_load_string;
 
 class AbstractErrorRendererTest extends TestCase
 {
@@ -162,7 +166,6 @@ class AbstractErrorRendererTest extends TestCase
             'Should contain http exception title'
         );
     }
-
 
     public function testXMLErrorRendererDisplaysErrorDetails()
     {

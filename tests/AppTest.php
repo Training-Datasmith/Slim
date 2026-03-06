@@ -10,6 +10,12 @@ declare(strict_types=1);
 
 namespace Slim\Tests;
 
+use function array_key_exists;
+use function array_shift;
+use function count;
+use function ini_set;
+use function json_encode;
+
 use Prophecy\Argument;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -38,17 +44,13 @@ use Slim\Middleware\BodyParsingMiddleware;
 use Slim\Middleware\ErrorMiddleware;
 use Slim\Middleware\RoutingMiddleware;
 use Slim\MiddlewareDispatcher;
+
 use Slim\Routing\RouteCollector;
 use Slim\Routing\RouteCollectorProxy;
 use Slim\Routing\RouteContext;
 use Slim\Tests\Mocks\MockAction;
 use stdClass;
 
-use function array_key_exists;
-use function array_shift;
-use function count;
-use function ini_set;
-use function json_encode;
 use function strtolower;
 use function sys_get_temp_dir;
 use function tempnam;
@@ -417,112 +419,112 @@ class AppTest extends TestCase
     {
         return [
             'empty group with empty route' => [
-                ['', ''], ''
+                ['', ''], '',
             ],
             'empty group with single slash route' => [
-                ['', '/'], '/'
+                ['', '/'], '/',
             ],
             'empty group with segment route that does not end in aSlash' => [
-                ['', '/foo'], '/foo'
+                ['', '/foo'], '/foo',
             ],
             'empty group with segment route that ends in aSlash' => [
-                ['', '/foo/'], '/foo/'
+                ['', '/foo/'], '/foo/',
             ],
             'group single slash with empty route' => [
-                ['/', ''], '/'
+                ['/', ''], '/',
             ],
             'group single slash with single slash route' => [
-                ['/', '/'], '//'
+                ['/', '/'], '//',
             ],
             'group single slash with segment route that does not end in aSlash' => [
-                ['/', '/foo'], '//foo'
+                ['/', '/foo'], '//foo',
             ],
             'group single slash with segment route that ends in aSlash' => [
-                ['/', '/foo/'], '//foo/'
+                ['/', '/foo/'], '//foo/',
             ],
             'group segment with empty route' => [
-                ['/foo', ''], '/foo'
+                ['/foo', ''], '/foo',
             ],
             'group segment with single slash route' => [
-                ['/foo', '/'], '/foo/'
+                ['/foo', '/'], '/foo/',
             ],
             'group segment with segment route that does not end in aSlash' => [
-                ['/foo', '/bar'], '/foo/bar'
+                ['/foo', '/bar'], '/foo/bar',
             ],
             'group segment with segment route that ends in aSlash' => [
-                ['/foo', '/bar/'], '/foo/bar/'
+                ['/foo', '/bar/'], '/foo/bar/',
             ],
             'empty group with nested group segment with an empty route' => [
-                ['', '/foo', ''], '/foo'
+                ['', '/foo', ''], '/foo',
             ],
             'empty group with nested group segment with single slash route' => [
-                ['', '/foo', '/'], '/foo/'
+                ['', '/foo', '/'], '/foo/',
             ],
             'group single slash with empty nested group and segment route without leading slash' => [
-                ['/', '', 'foo'], '/foo'
+                ['/', '', 'foo'], '/foo',
             ],
             'group single slash with empty nested group and segment route' => [
-                ['/', '', '/foo'], '//foo'
+                ['/', '', '/foo'], '//foo',
             ],
             'group single slash with single slash group and segment route without leading slash' => [
-                ['/', '/', 'foo'], '//foo'
+                ['/', '/', 'foo'], '//foo',
             ],
             'group single slash with single slash nested group and segment route' => [
-                ['/', '/', '/foo'], '///foo'
+                ['/', '/', '/foo'], '///foo',
             ],
             'group single slash with nested group segment with an empty route' => [
-                ['/', '/foo', ''], '//foo'
+                ['/', '/foo', ''], '//foo',
             ],
             'group single slash with nested group segment with single slash route' => [
-                ['/', '/foo', '/'], '//foo/'
+                ['/', '/foo', '/'], '//foo/',
             ],
             'group single slash with nested group segment with segment route' => [
-                ['/', '/foo', '/bar'], '//foo/bar'
+                ['/', '/foo', '/bar'], '//foo/bar',
             ],
             'group single slash with nested group segment with segment route that has aTrailing slash' => [
-                ['/', '/foo', '/bar/'], '//foo/bar/'
+                ['/', '/foo', '/bar/'], '//foo/bar/',
             ],
             'empty group with empty nested group and segment route without leading slash' => [
-                ['', '', 'foo'], 'foo'
+                ['', '', 'foo'], 'foo',
             ],
             'empty group with empty nested group and segment route' => [
-                ['', '', '/foo'], '/foo'
+                ['', '', '/foo'], '/foo',
             ],
             'empty group with single slash group and segment route without leading slash' => [
-                ['', '/', 'foo'], '/foo'
+                ['', '/', 'foo'], '/foo',
             ],
             'empty group with single slash nested group and segment route' => [
-                ['', '/', '/foo'], '//foo'
+                ['', '/', '/foo'], '//foo',
             ],
             'empty group with nested group segment with segment route' => [
-                ['', '/foo', '/bar'], '/foo/bar'
+                ['', '/foo', '/bar'], '/foo/bar',
             ],
             'empty group with nested group segment with segment route that has aTrailing slash' => [
-                ['', '/foo', '/bar/'], '/foo/bar/'
+                ['', '/foo', '/bar/'], '/foo/bar/',
             ],
             'group segment with empty nested group and segment route without leading slash' => [
-                ['/foo', '', 'bar'], '/foobar'
+                ['/foo', '', 'bar'], '/foobar',
             ],
             'group segment with empty nested group and segment route' => [
-                ['/foo', '', '/bar'], '/foo/bar'
+                ['/foo', '', '/bar'], '/foo/bar',
             ],
             'group segment with single slash nested group and segment route' => [
-                ['/foo', '/', 'bar'], '/foo/bar'
+                ['/foo', '/', 'bar'], '/foo/bar',
             ],
             'group segment with single slash nested group and slash segment route' => [
-                ['/foo', '/', '/bar'], '/foo//bar'
+                ['/foo', '/', '/bar'], '/foo//bar',
             ],
             'two group segments with empty route' => [
-                ['/foo', '/bar', ''], '/foo/bar'
+                ['/foo', '/bar', ''], '/foo/bar',
             ],
             'two group segments with single slash route' => [
-                ['/foo', '/bar', '/'], '/foo/bar/'
+                ['/foo', '/bar', '/'], '/foo/bar/',
             ],
             'two group segments with segment route' => [
-                ['/foo', '/bar', '/baz'], '/foo/bar/baz'
+                ['/foo', '/bar', '/baz'], '/foo/bar/baz',
             ],
             'two group segments with segment route that has aTrailing slash' => [
-                ['/foo', '/bar', '/baz/'], '/foo/bar/baz/'
+                ['/foo', '/bar', '/baz/'], '/foo/bar/baz/',
             ],
         ];
     }
@@ -640,7 +642,6 @@ class AppTest extends TestCase
             $this->getAttribute($args[0])->willReturn($args[1]);
             return $this;
         });
-
 
         $response = $app->handle($requestProphecy->reveal());
         $middlewareProphecy->process(
@@ -1428,8 +1429,7 @@ class AppTest extends TestCase
         $responseFactoryProphecy = $this->prophesize(ResponseFactoryInterface::class);
         $responseFactoryProphecy->createResponse()->willReturn($responseProphecy->reveal());
 
-        $handler = new class
-        {
+        $handler = new class () {
             public function foo(ServerRequestInterface $request, ResponseInterface $response)
             {
                 return $response;
@@ -1470,8 +1470,7 @@ class AppTest extends TestCase
         $responseFactoryProphecy = $this->prophesize(ResponseFactoryInterface::class);
         $responseFactoryProphecy->createResponse()->willReturn($responseProphecy->reveal());
 
-        $handler = new class
-        {
+        $handler = new class () {
         };
 
         $containerProphecy = $this->prophesize(ContainerInterface::class);

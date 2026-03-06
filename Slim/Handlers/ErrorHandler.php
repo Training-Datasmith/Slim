@@ -10,23 +10,6 @@ declare(strict_types=1);
 
 namespace Slim\Handlers;
 
-use Psr\Http\Message\ResponseFactoryInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LoggerInterface;
-use RuntimeException;
-use Slim\Error\Renderers\HtmlErrorRenderer;
-use Slim\Error\Renderers\JsonErrorRenderer;
-use Slim\Error\Renderers\PlainTextErrorRenderer;
-use Slim\Error\Renderers\XmlErrorRenderer;
-use Slim\Exception\HttpException;
-use Slim\Exception\HttpMethodNotAllowedException;
-use Slim\Interfaces\CallableResolverInterface;
-use Slim\Interfaces\ErrorHandlerInterface;
-use Slim\Interfaces\ErrorRendererInterface;
-use Slim\Logger;
-use Throwable;
-
 use function array_intersect;
 use function array_key_exists;
 use function array_keys;
@@ -37,6 +20,24 @@ use function explode;
 use function implode;
 use function next;
 use function preg_match;
+
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
+use RuntimeException;
+use Slim\Error\Renderers\HtmlErrorRenderer;
+
+use Slim\Error\Renderers\JsonErrorRenderer;
+use Slim\Error\Renderers\PlainTextErrorRenderer;
+use Slim\Error\Renderers\XmlErrorRenderer;
+use Slim\Exception\HttpException;
+use Slim\Exception\HttpMethodNotAllowedException;
+use Slim\Interfaces\CallableResolverInterface;
+use Slim\Interfaces\ErrorHandlerInterface;
+use Slim\Interfaces\ErrorRendererInterface;
+use Slim\Logger;
+use Throwable;
 
 /**
  * Default Slim application error handler

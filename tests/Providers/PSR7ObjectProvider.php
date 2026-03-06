@@ -10,16 +10,18 @@ declare(strict_types=1);
 
 namespace Slim\Tests\Providers;
 
+use function array_merge;
+use function microtime;
+
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
+
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\StreamInterface;
 
-use function array_merge;
-use function microtime;
 use function time;
 
 /**

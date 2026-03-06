@@ -10,23 +10,25 @@ declare(strict_types=1);
 
 namespace Slim\Routing;
 
+use function array_pop;
+use function dirname;
+use function file_exists;
+use function is_readable;
+use function is_writable;
+
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use RuntimeException;
 use Slim\Handlers\Strategies\RequestResponse;
 use Slim\Interfaces\CallableResolverInterface;
 use Slim\Interfaces\InvocationStrategyInterface;
+
 use Slim\Interfaces\RouteCollectorInterface;
 use Slim\Interfaces\RouteCollectorProxyInterface;
 use Slim\Interfaces\RouteGroupInterface;
 use Slim\Interfaces\RouteInterface;
 use Slim\Interfaces\RouteParserInterface;
 
-use function array_pop;
-use function dirname;
-use function file_exists;
-use function is_readable;
-use function is_writable;
 use function sprintf;
 
 /**

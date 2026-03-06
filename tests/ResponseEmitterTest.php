@@ -10,30 +10,39 @@ declare(strict_types=1);
 
 namespace Slim\Tests;
 
+use function base64_decode;
+
+use const CONNECTION_ABORTED;
+use const CONNECTION_TIMEOUT;
+
+use function fopen;
+use function fwrite;
+use function in_array;
+
+use function popen;
+
 use ReflectionClass;
+
+use function rewind;
+
 use Slim\ResponseEmitter;
 use Slim\Tests\Assets\HeaderStack;
 use Slim\Tests\Mocks\MockStream;
 use Slim\Tests\Mocks\SlowPokeStream;
 use Slim\Tests\Mocks\SmallChunksStream;
 
-use function base64_decode;
-use function fopen;
-use function fwrite;
-use function in_array;
-use function popen;
-use function rewind;
 use function str_repeat;
 use function stream_filter_append;
+
+use const STREAM_FILTER_READ;
+
 use function stream_filter_remove;
+
+use const STREAM_FILTER_WRITE;
+
 use function stream_get_filters;
 use function strlen;
 use function trim;
-
-use const CONNECTION_ABORTED;
-use const CONNECTION_TIMEOUT;
-use const STREAM_FILTER_READ;
-use const STREAM_FILTER_WRITE;
 
 class ResponseEmitterTest extends TestCase
 {
@@ -77,7 +86,7 @@ class ResponseEmitterTest extends TestCase
             $stream = fopen('php://temp', 'r+');
             $filter = stream_filter_append($stream, $specificFilterName, STREAM_FILTER_WRITE, [
                 'key' => $key,
-                'iv' => $iv
+                'iv' => $iv,
             ]);
 
             fwrite($stream, $data);
@@ -85,7 +94,7 @@ class ResponseEmitterTest extends TestCase
             stream_filter_remove($filter);
             stream_filter_append($stream, $specificUnfilterName, STREAM_FILTER_READ, [
                 'key' => $key,
-                'iv' => $iv
+                'iv' => $iv,
             ]);
 
             $body = $this->getStreamFactory()->createStreamFromResource($stream);
@@ -275,7 +284,6 @@ class ResponseEmitterTest extends TestCase
             ->createResponse()
             ->withBody($body);
 
-
         $responseEmitter = new ResponseEmitter();
 
         $mirror = new ReflectionClass(ResponseEmitter::class);
@@ -283,7 +291,7 @@ class ResponseEmitterTest extends TestCase
         $this->setAccessible($emitBodyMethod);
         $emitBodyMethod->invoke($responseEmitter, $response);
 
-        $this->expectOutputString("");
+        $this->expectOutputString('');
 
         // Tell connection_status() to pass.
         unset($GLOBALS['connection_status_return']);

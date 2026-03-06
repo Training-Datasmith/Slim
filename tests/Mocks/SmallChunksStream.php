@@ -11,12 +11,14 @@ declare(strict_types=1);
 namespace Slim\Tests\Mocks;
 
 use Exception;
-use Psr\Http\Message\StreamInterface;
 
 use function min;
-use function str_repeat;
+
+use Psr\Http\Message\StreamInterface;
 
 use const SEEK_SET;
+
+use function str_repeat;
 
 class SmallChunksStream implements StreamInterface
 {

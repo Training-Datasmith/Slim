@@ -10,12 +10,13 @@ declare(strict_types=1);
 
 namespace Slim\Tests\Mocks;
 
+use function debug_backtrace;
+
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Slim\Tests\Providers\PSR7ObjectProvider;
 
-use function debug_backtrace;
+use Slim\Tests\Providers\PSR7ObjectProvider;
 
 class RequestHandlerTest implements RequestHandlerInterface
 {

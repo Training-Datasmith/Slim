@@ -12,6 +12,12 @@ namespace Slim\Tests;
 
 use Closure;
 use Exception;
+
+use function is_callable;
+use function is_string;
+use function ob_end_clean;
+use function ob_start;
+
 use Prophecy\Argument;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
@@ -30,15 +36,11 @@ use Slim\Routing\Route;
 use Slim\Routing\RouteGroup;
 use Slim\Tests\Mocks\CallableTest;
 use Slim\Tests\Mocks\InvocationStrategyTest;
+
 use Slim\Tests\Mocks\MockCustomRequestHandlerInvocationStrategy;
 use Slim\Tests\Mocks\MockMiddlewareWithoutConstructor;
 use Slim\Tests\Mocks\MockMiddlewareWithoutInterface;
 use Slim\Tests\Mocks\RequestHandlerTest;
-
-use function is_callable;
-use function is_string;
-use function ob_end_clean;
-use function ob_start;
 
 class RouteTest extends TestCase
 {
@@ -51,7 +53,7 @@ class RouteTest extends TestCase
     public function createRoute($methods = 'GET', string $pattern = '/', $callable = null): Route
     {
         $callable ??= function (ServerRequestInterface $request, ResponseInterface $response) {
-                return $response;
+            return $response;
         };
 
         $callableResolverProphecy = $this->prophesize(CallableResolverInterface::class);
@@ -485,7 +487,7 @@ class RouteTest extends TestCase
     public function testRouteCallableDoesNotAppendEchoedOutput()
     {
         $callable = function (ServerRequestInterface $request, ResponseInterface $response) {
-            echo "foo";
+            echo 'foo';
             return $response->withStatus(201);
         };
         $route = $this->createRoute(['GET'], '/', $callable);

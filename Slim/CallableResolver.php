@@ -10,20 +10,24 @@ declare(strict_types=1);
 
 namespace Slim;
 
+use function class_exists;
+
 use Closure;
+
+use function is_array;
+use function is_callable;
+use function is_object;
+use function is_string;
+
+use function json_encode;
+use function preg_match;
+
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use RuntimeException;
 use Slim\Interfaces\AdvancedCallableResolverInterface;
 
-use function class_exists;
-use function is_array;
-use function is_callable;
-use function is_object;
-use function is_string;
-use function json_encode;
-use function preg_match;
 use function sprintf;
 
 /**

@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Slim\Tests\Routing;
 
+use function microtime;
+
 use Psr\Http\Message\ResponseFactoryInterface;
 use ReflectionMethod;
 use Slim\Interfaces\CallableResolverInterface;
@@ -17,10 +19,9 @@ use Slim\Routing\Dispatcher;
 use Slim\Routing\FastRouteDispatcher;
 use Slim\Routing\RouteCollector;
 use Slim\Routing\RoutingResults;
+
 use Slim\Tests\TestCase;
 
-use function dirname;
-use function microtime;
 use function uniqid;
 use function unlink;
 

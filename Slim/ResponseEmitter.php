@@ -10,18 +10,20 @@ declare(strict_types=1);
 
 namespace Slim;
 
-use Psr\Http\Message\ResponseInterface;
+use const CONNECTION_NORMAL;
 
 use function connection_status;
 use function header;
 use function headers_sent;
 use function in_array;
 use function min;
+
+use Psr\Http\Message\ResponseInterface;
+
 use function sprintf;
 use function strlen;
-use function strtolower;
 
-use const CONNECTION_NORMAL;
+use function strtolower;
 
 class ResponseEmitter
 {

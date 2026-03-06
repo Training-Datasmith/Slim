@@ -11,9 +11,9 @@ declare(strict_types=1);
 namespace Slim\Tests\Factory;
 
 use GuzzleHttp\Psr7\ServerRequest as GuzzleServerRequest;
+use HttpSoft\Message\ServerRequest as HttpSoftServerRequest;
 use Laminas\Diactoros\ServerRequest as LaminasDiactorosServerRequest;
 use Nyholm\Psr7\ServerRequest as NyholmServerRequest;
-use HttpSoft\Message\ServerRequest as HttpSoftServerRequest;
 use Psr\Http\Message\ServerRequestInterface;
 use RuntimeException;
 use Slim\Factory\Psr17\GuzzlePsr17Factory;
@@ -73,7 +73,7 @@ class ServerRequestCreatorFactoryTest extends TestCase
     /**
      * @runInSeparateProcess - Psr17FactoryProvider::setFactories breaks other tests
      */
-     #[\PHPUnit\Framework\Attributes\RunInSeparateProcess]
+    #[\PHPUnit\Framework\Attributes\RunInSeparateProcess]
     public function testDetermineServerRequestCreatorThrowsRuntimeException()
     {
         $this->expectException(RuntimeException::class);

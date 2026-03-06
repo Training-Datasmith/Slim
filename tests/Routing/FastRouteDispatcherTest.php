@@ -13,10 +13,12 @@ namespace Slim\Tests\Routing;
 use FastRoute\BadRouteException;
 use FastRoute\DataGenerator\GroupCountBased;
 use FastRoute\RouteCollector;
-use Slim\Routing\FastRouteDispatcher;
-use Slim\Tests\TestCase;
 
 use function FastRoute\simpleDispatcher;
+
+use Slim\Routing\FastRouteDispatcher;
+
+use Slim\Tests\TestCase;
 
 class FastRouteDispatcherTest extends TestCase
 {
@@ -43,7 +45,7 @@ class FastRouteDispatcherTest extends TestCase
     {
         return [
             'dataGenerator' => $this->getDataGeneratorClass(),
-            'dispatcher' => $this->getDispatcherClass()
+            'dispatcher' => $this->getDispatcherClass(),
         ];
     }
 

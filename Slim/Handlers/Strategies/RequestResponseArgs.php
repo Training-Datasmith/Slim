@@ -10,11 +10,12 @@ declare(strict_types=1);
 
 namespace Slim\Handlers\Strategies;
 
+use function array_values;
+
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Interfaces\InvocationStrategyInterface;
 
-use function array_values;
+use Slim\Interfaces\InvocationStrategyInterface;
 
 /**
  * Route callback strategy with route parameters as individual arguments.

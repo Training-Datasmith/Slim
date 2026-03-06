@@ -10,10 +10,12 @@ declare(strict_types=1);
 
 namespace Slim\Tests\Mocks;
 
+use function compact;
+
+use function count;
+
 use InvalidArgumentException;
 
-use function compact;
-use function count;
 use function json_encode;
 
 class MockAction
@@ -21,7 +23,7 @@ class MockAction
     public function __call($name, array $arguments)
     {
         if (count($arguments) !== 3) {
-            throw new InvalidArgumentException("Not a Slim call");
+            throw new InvalidArgumentException('Not a Slim call');
         }
 
         $response = $arguments[1];
