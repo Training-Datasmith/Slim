@@ -184,11 +184,12 @@ class MiddlewareDispatcher implements MiddlewareDispatcherInterface
 
                 $callable = null;
 
+                $resolveException = null;
                 if ($this->callableResolver instanceof CallableResolverInterface) {
                     try {
                         $callable = $this->callableResolver->resolve($this->middleware);
                     } catch (RuntimeException $e) {
-                        // Do Nothing
+                        $resolveException = $e;
                     }
                 }
 
@@ -226,7 +227,10 @@ class MiddlewareDispatcher implements MiddlewareDispatcherInterface
                     }
 
                     if ($this->container && $callable instanceof Closure) {
-                        $callable = $callable->bindTo($this->container);
+                        $bound = $callable->bindTo($this->container);
+                        if ($bound !== null) {
+                            $callable = $bound;
+                        }
                     }
                 }
 
@@ -235,7 +239,9 @@ class MiddlewareDispatcher implements MiddlewareDispatcherInterface
                         sprintf(
                             'Middleware %s is not resolvable',
                             $this->middleware
-                        )
+                        ),
+                        0,
+                        $resolveException
                     );
                 }
 
@@ -260,8 +266,10 @@ class MiddlewareDispatcher implements MiddlewareDispatcherInterface
         $next = $this->tip;
 
         if ($this->container && $middleware instanceof Closure) {
-            /** @var Closure $middleware */
-            $middleware = $middleware->bindTo($this->container);
+            $bound = $middleware->bindTo($this->container);
+            if ($bound !== null) {
+                $middleware = $bound;
+            }
         }
 
         $this->tip = new class ($middleware, $next) implements RequestHandlerInterface {

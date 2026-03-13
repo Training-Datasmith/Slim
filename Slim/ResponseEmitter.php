@@ -31,6 +31,9 @@ class ResponseEmitter
 
     public function __construct(int $responseChunkSize = 4096)
     {
+        if ($responseChunkSize < 1) {
+            throw new \InvalidArgumentException('Response chunk size must be a positive integer.');
+        }
         $this->responseChunkSize = $responseChunkSize;
     }
 
@@ -133,6 +136,11 @@ class ResponseEmitter
         if ($seekable) {
             $stream->rewind();
         }
-        return $seekable ? $stream->read(1) === '' : $stream->eof();
+        if ($seekable) {
+            $isEmpty = $stream->read(1) === '';
+            $stream->rewind();
+            return $isEmpty;
+        }
+        return $stream->eof();
     }
 }

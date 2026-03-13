@@ -35,7 +35,10 @@ use function sprintf;
  */
 final class CallableResolver implements AdvancedCallableResolverInterface
 {
-    public static string $callablePattern = '!^([^\:]+)\:([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)$!';
+    private const CALLABLE_PATTERN = '!^([^\:]+)\:([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)$!';
+
+    /** @deprecated Use the CALLABLE_PATTERN constant instead */
+    public static string $callablePattern = self::CALLABLE_PATTERN;
 
     /** @var TContainerInterface $container */
     private ?ContainerInterface $container;
@@ -177,8 +180,10 @@ final class CallableResolver implements AdvancedCallableResolverInterface
             $callable = $callable[0];
         }
         if ($this->container && $callable instanceof Closure) {
-            /** @var Closure $callable */
-            $callable = $callable->bindTo($this->container);
+            $bound = $callable->bindTo($this->container);
+            if ($bound !== null) {
+                $callable = $bound;
+            }
         }
         return $callable;
     }

@@ -10,7 +10,9 @@ declare(strict_types=1);
 
 namespace Slim\Middleware;
 
+use function in_array;
 use function is_array;
+use function is_string;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -23,21 +25,30 @@ use function strtoupper;
 /** @api */
 class MethodOverrideMiddleware implements MiddlewareInterface
 {
+    private const ALLOWED_OVERRIDE_METHODS = ['GET', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'];
+
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $methodHeader = $request->getHeaderLine('X-Http-Method-Override');
+        if (strtoupper($request->getMethod()) === 'POST') {
+            $method = null;
 
-        if ($methodHeader) {
-            $request = $request->withMethod($methodHeader);
-        } elseif (strtoupper($request->getMethod()) === 'POST') {
-            $body = $request->getParsedBody();
-
-            if (is_array($body) && !empty($body['_METHOD']) && is_string($body['_METHOD'])) {
-                $request = $request->withMethod($body['_METHOD']);
+            $methodHeader = $request->getHeaderLine('X-Http-Method-Override');
+            if ($methodHeader) {
+                $method = strtoupper($methodHeader);
+            } else {
+                $body = $request->getParsedBody();
+                if (is_array($body) && !empty($body['_METHOD']) && is_string($body['_METHOD'])) {
+                    $method = strtoupper($body['_METHOD']);
+                }
             }
 
-            if ($request->getBody()->eof()) {
-                $request->getBody()->rewind();
+            if ($method !== null && in_array($method, self::ALLOWED_OVERRIDE_METHODS, true)) {
+                $request = $request->withMethod($method);
+            }
+
+            $body = $request->getBody();
+            if ($body->eof() && $body->isSeekable()) {
+                $body->rewind();
             }
         }
 

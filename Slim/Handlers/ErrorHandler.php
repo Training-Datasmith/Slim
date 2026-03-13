@@ -20,6 +20,8 @@ use function explode;
 use function implode;
 use function next;
 use function preg_match;
+use function strtolower;
+use function trim;
 
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -79,6 +81,8 @@ class ErrorHandler implements ErrorHandlerInterface
 
     protected ?string $contentType = null;
 
+    protected ?string $forcedContentType = null;
+
     protected ?string $method = null;
 
     protected ServerRequestInterface $request;
@@ -126,9 +130,7 @@ class ErrorHandler implements ErrorHandlerInterface
         $this->exception = $exception;
         $this->method = $request->getMethod();
         $this->statusCode = $this->determineStatusCode();
-        if ($this->contentType === null) {
-            $this->contentType = $this->determineContentType($request);
-        }
+        $this->contentType = $this->forcedContentType ?? $this->determineContentType($request);
 
         if ($logErrors) {
             $this->writeToErrorLog();
@@ -144,7 +146,7 @@ class ErrorHandler implements ErrorHandlerInterface
      */
     public function forceContentType(?string $contentType): void
     {
-        $this->contentType = $contentType;
+        $this->forcedContentType = $contentType;
     }
 
     protected function determineStatusCode(): int
@@ -170,8 +172,11 @@ class ErrorHandler implements ErrorHandlerInterface
     protected function determineContentType(ServerRequestInterface $request): ?string
     {
         $acceptHeader = $request->getHeaderLine('Accept');
+        $acceptTypes = array_map(function (string $type): string {
+            return strtolower(trim(explode(';', $type)[0]));
+        }, explode(',', $acceptHeader));
         $selectedContentTypes = array_intersect(
-            explode(',', $acceptHeader),
+            $acceptTypes,
             array_keys($this->errorRenderers)
         );
         $count = count($selectedContentTypes);

@@ -12,6 +12,7 @@ namespace Slim\Error\Renderers;
 
 use function get_class;
 use function htmlentities;
+use function htmlspecialchars;
 
 use Slim\Error\AbstractErrorRenderer;
 
@@ -31,7 +32,7 @@ class HtmlErrorRenderer extends AbstractErrorRenderer
             $html .= '<h2>Details</h2>';
             $html .= $this->renderExceptionFragment($exception);
         } else {
-            $html = "<p>{$this->getErrorDescription($exception)}</p>";
+            $html = '<p>' . htmlspecialchars($this->getErrorDescription($exception), ENT_QUOTES | ENT_HTML5, 'UTF-8') . '</p>';
         }
 
         return $this->renderHtmlBody($this->getErrorTitle($exception), $html);
@@ -39,24 +40,25 @@ class HtmlErrorRenderer extends AbstractErrorRenderer
 
     private function renderExceptionFragment(Throwable $exception): string
     {
-        $html = sprintf('<div><strong>Type:</strong> %s</div>', get_class($exception));
+        $html = sprintf('<div><strong>Type:</strong> %s</div>', htmlspecialchars(get_class($exception), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
 
         $code = $exception->getCode();
-        $html .= sprintf('<div><strong>Code:</strong> %s</div>', $code);
+        $html .= sprintf('<div><strong>Code:</strong> %s</div>', htmlspecialchars((string) $code, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
 
-        $html .= sprintf('<div><strong>Message:</strong> %s</div>', htmlentities($exception->getMessage()));
+        $html .= sprintf('<div><strong>Message:</strong> %s</div>', htmlspecialchars($exception->getMessage(), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
 
-        $html .= sprintf('<div><strong>File:</strong> %s</div>', $exception->getFile());
+        $html .= sprintf('<div><strong>File:</strong> %s</div>', htmlspecialchars($exception->getFile(), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
 
         $html .= sprintf('<div><strong>Line:</strong> %s</div>', $exception->getLine());
 
         $html .= '<h2>Trace</h2>';
 
-        return $html . sprintf('<pre>%s</pre>', htmlentities($exception->getTraceAsString()));
+        return $html . sprintf('<pre>%s</pre>', htmlspecialchars($exception->getTraceAsString(), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
     }
 
     public function renderHtmlBody(string $title = '', string $html = ''): string
     {
+        $escapedTitle = htmlspecialchars($title, ENT_QUOTES | ENT_HTML5, 'UTF-8');
         return sprintf(
             '<!doctype html>' .
             '<html lang="en">' .
@@ -76,8 +78,8 @@ class HtmlErrorRenderer extends AbstractErrorRenderer
             '        <a href="#" onclick="window.history.go(-1)">Go Back</a>' .
             '    </body>' .
             '</html>',
-            $title,
-            $title,
+            $escapedTitle,
+            $escapedTitle,
             $html
         );
     }

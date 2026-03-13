@@ -13,8 +13,6 @@ namespace Slim\Routing;
 use function array_key_exists;
 use function array_replace;
 use function array_reverse;
-use function class_implements;
-use function in_array;
 use function is_array;
 
 use Psr\Container\ContainerInterface;
@@ -343,12 +341,10 @@ class Route implements RouteInterface, RequestHandlerInterface
         }
         $strategy = $this->invocationStrategy;
 
-        $strategyImplements = class_implements($strategy);
-
         if (
             is_array($callable)
             && $callable[0] instanceof RequestHandlerInterface
-            && !in_array(RequestHandlerInvocationStrategyInterface::class, $strategyImplements)
+            && !($strategy instanceof RequestHandlerInvocationStrategyInterface)
         ) {
             $strategy = new RequestHandler();
         }

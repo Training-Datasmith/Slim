@@ -18,10 +18,7 @@ use function is_string;
 
 use function json_decode;
 use function libxml_clear_errors;
-use function libxml_disable_entity_loader;
 use function libxml_use_internal_errors;
-
-use const LIBXML_VERSION;
 
 use function parse_str;
 
@@ -60,7 +57,7 @@ class BodyParsingMiddleware implements MiddlewareInterface
     {
         $parsedBody = $request->getParsedBody();
 
-        if (empty($parsedBody)) {
+        if ($parsedBody === null) {
             $parsedBody = $this->parseBody($request);
             $request = $request->withParsedBody($parsedBody);
         }
@@ -192,14 +189,9 @@ class BodyParsingMiddleware implements MiddlewareInterface
 
     protected static function disableXmlEntityLoader(bool $disable): bool
     {
-        if (LIBXML_VERSION >= 20900) {
-            // libxml >= 2.9.0 disables entity loading by default, so it is
-            // safe to skip the real call (deprecated in PHP 8).
-            return true;
-        }
-
-        // @codeCoverageIgnoreStart
-        return libxml_disable_entity_loader($disable);
-        // @codeCoverageIgnoreEnd
+        // libxml >= 2.9.0 disables entity loading by default.
+        // libxml_disable_entity_loader() was deprecated in PHP 8.0 and removed in PHP 8.2.
+        // Since Slim 4.x requires PHP >= 8.1, this is always safe to skip.
+        return true;
     }
 }

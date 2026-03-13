@@ -18,6 +18,8 @@ use FastRoute\RouteParser\Std;
 use function http_build_query;
 use function implode;
 
+use function rawurlencode;
+
 use InvalidArgumentException;
 
 use function is_string;
@@ -77,7 +79,7 @@ class RouteParser implements RouteParserInterface
                     break;
                 }
 
-                $segments[] = $data[$segment[0]];
+                $segments[] = rawurlencode($data[$segment[0]]);
             }
 
             /*

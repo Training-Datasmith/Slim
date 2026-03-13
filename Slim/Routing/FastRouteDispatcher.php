@@ -100,6 +100,8 @@ class FastRouteDispatcher extends GroupCountBased
             }
         }
 
-        return $this->allowedMethods[$uri] = array_keys($allowedMethods);
+        return $this->allowedMethods[$uri] = array_values(
+            array_filter(array_keys($allowedMethods), static fn(string $m): bool => $m !== '*')
+        );
     }
 }

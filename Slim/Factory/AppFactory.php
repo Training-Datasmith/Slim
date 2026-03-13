@@ -58,8 +58,9 @@ class AppFactory
         ?RouteResolverInterface $routeResolver = null,
         ?MiddlewareDispatcherInterface $middlewareDispatcher = null
     ): App {
+        $resolvedResponseFactory = static::$responseFactory;
         static::$responseFactory = $responseFactory ?? static::$responseFactory;
-        return new App(
+        $result = new App(
             self::determineResponseFactory(),
             $container ?? static::$container,
             $callableResolver ?? static::$callableResolver,
@@ -67,6 +68,8 @@ class AppFactory
             $routeResolver ?? static::$routeResolver,
             $middlewareDispatcher ?? static::$middlewareDispatcher
         );
+        static::$responseFactory = $resolvedResponseFactory;
+        return $result;
     }
 
     /**
@@ -213,5 +216,21 @@ class AppFactory
     public static function setSlimHttpDecoratorsAutomaticDetection(bool $enabled): void
     {
         static::$slimHttpDecoratorsAutomaticDetectionEnabled = $enabled;
+    }
+
+    /**
+     * Reset all static state. Useful in test suites to prevent state leakage between tests.
+     */
+    public static function reset(): void
+    {
+        static::$psr17FactoryProvider = null;
+        static::$responseFactory = null;
+        static::$streamFactory = null;
+        static::$container = null;
+        static::$callableResolver = null;
+        static::$routeCollector = null;
+        static::$routeResolver = null;
+        static::$middlewareDispatcher = null;
+        static::$slimHttpDecoratorsAutomaticDetectionEnabled = true;
     }
 }

@@ -128,6 +128,10 @@ class MethodOverrideMiddlewareTest extends TestCase
             ->willReturn(true)
             ->shouldBeCalled();
         /** @noinspection PhpUndefinedMethodInspection */
+        $bodyProphecy->isSeekable()
+            ->willReturn(true)
+            ->shouldBeCalled();
+        /** @noinspection PhpUndefinedMethodInspection */
         $bodyProphecy->rewind()
             ->shouldBeCalled();
         /** @var StreamInterface $body */

@@ -191,6 +191,6 @@ class RouteCollectorProxy implements RouteCollectorProxyInterface
             return $response->withHeader('Location', (string) $to);
         };
 
-        return $this->get($from, $handler);
+        return $this->map(['GET', 'HEAD'], $from, $handler);
     }
 }
