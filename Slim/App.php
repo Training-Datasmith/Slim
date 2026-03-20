@@ -79,19 +79,35 @@ class App extends RouteCollectorProxy implements RequestHandlerInterface
         $this->middlewareDispatcher = $middlewareDispatcher;
     }
 
+    /**
+     * Returns the route resolver responsible for matching requests to routes.
+     *
+     * @return RouteResolverInterface The configured route resolver
+     */
     public function getRouteResolver(): RouteResolverInterface
     {
         return $this->routeResolver;
     }
 
+    /**
+     * Returns the middleware dispatcher that manages the application middleware stack.
+     *
+     * @return MiddlewareDispatcherInterface The configured middleware dispatcher
+     */
     public function getMiddlewareDispatcher(): MiddlewareDispatcherInterface
     {
         return $this->middlewareDispatcher;
     }
 
     /**
-     * @param MiddlewareInterface|string|callable $middleware
-     * @return App<TContainerInterface>
+     * Adds middleware to the application's outer middleware stack.
+     *
+     * Middleware is executed in LIFO order: the last middleware added runs first.
+     * Pass a PSR-15 MiddlewareInterface, a callable, or a string "Class:method" reference.
+     *
+     * @param MiddlewareInterface|string|callable $middleware Middleware to add
+     *
+     * @return App<TContainerInterface> Fluent interface for chaining
      */
     public function add($middleware): self
     {
@@ -100,7 +116,14 @@ class App extends RouteCollectorProxy implements RequestHandlerInterface
     }
 
     /**
-     * @return App<TContainerInterface>
+     * Adds a PSR-15 middleware instance to the application's outer middleware stack.
+     *
+     * Prefer this over add() when you already have a MiddlewareInterface instance,
+     * as it provides stronger type safety.
+     *
+     * @param MiddlewareInterface $middleware Typed middleware instance to add
+     *
+     * @return App<TContainerInterface> Fluent interface for chaining
      */
     public function addMiddleware(MiddlewareInterface $middleware): self
     {
@@ -109,9 +132,14 @@ class App extends RouteCollectorProxy implements RequestHandlerInterface
     }
 
     /**
-     * Add the Slim built-in routing middleware to the app middleware stack
+     * Adds the Slim built-in routing middleware to the application middleware stack.
      *
-     * This method can be used to control middleware order and is not required for default routing operation.
+     * Adds a RoutingMiddleware that runs route resolution and attaches the matching
+     * route and its arguments to the request as attributes. This method can be used
+     * to control middleware order; calling it is not required when using addErrorMiddleware()
+     * as that implicitly registers routing.
+     *
+     * @return RoutingMiddleware The registered routing middleware instance
      */
     public function addRoutingMiddleware(): RoutingMiddleware
     {
@@ -124,9 +152,18 @@ class App extends RouteCollectorProxy implements RequestHandlerInterface
     }
 
     /**
-     * Add the Slim built-in error middleware to the app middleware stack
+     * Adds the Slim built-in error middleware to the application middleware stack.
      *
+     * The error middleware catches all throwables from the inner middleware stack and
+     * delegates to registered error handlers. It should typically be the outermost
+     * middleware so it can catch errors from all inner middleware.
      *
+     * @param bool                 $displayErrorDetails Whether to include exception details in error responses (disable in production)
+     * @param bool                 $logErrors           Whether to log errors via the provided logger
+     * @param bool                 $logErrorDetails     Whether to include exception details in log entries
+     * @param LoggerInterface|null $logger              PSR-3 logger; defaults to Slim's built-in logger when null
+     *
+     * @return ErrorMiddleware The registered error middleware instance (allows registering custom handlers)
      */
     public function addErrorMiddleware(
         bool $displayErrorDetails,
@@ -147,9 +184,15 @@ class App extends RouteCollectorProxy implements RequestHandlerInterface
     }
 
     /**
-     * Add the Slim body parsing middleware to the app middleware stack
+     * Adds the Slim body parsing middleware to the application middleware stack.
      *
-     * @param callable[] $bodyParsers
+     * Automatically decodes JSON, XML, and URL-encoded request bodies into
+     * parsed body arrays accessible via $request->getParsedBody(). Additional
+     * custom parsers can be provided for other content types.
+     *
+     * @param callable[] $bodyParsers Map of content-type string => callable($body): mixed
+     *
+     * @return BodyParsingMiddleware The registered body parsing middleware instance
      */
     public function addBodyParsingMiddleware(array $bodyParsers = []): BodyParsingMiddleware
     {
@@ -159,10 +202,15 @@ class App extends RouteCollectorProxy implements RequestHandlerInterface
     }
 
     /**
-     * Run application
+     * Runs the application and emits the response to the HTTP client.
      *
-     * This method traverses the application middleware stack and then sends the
-     * resultant Response object to the HTTP client.
+     * Creates a server request from PHP globals if none is provided, passes it
+     * through the full middleware stack, then emits the resulting response with
+     * headers and body via PHP's output functions.
+     *
+     * @param ServerRequestInterface|null $request Pre-built server request, or null to create from $_SERVER/$_POST/etc.
+     *
+     * @return void
      */
     public function run(?ServerRequestInterface $request = null): void
     {
