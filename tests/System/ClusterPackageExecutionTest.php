@@ -19,6 +19,7 @@ use Slim\Factory\AppFactory;
 use Slim\Logger;
 use Slim\Tests\TestCase;
 use Stringable;
+use Symfony\Polyfill\Php84\Php84;
 
 use function array_any;
 use function array_all;
@@ -27,10 +28,8 @@ use function bcdivmod;
 use function fpow;
 use function file_exists;
 use function file_get_contents;
-use function grapheme_str_split;
 use function ini_get;
 use function ini_set;
-use function mb_trim;
 use function sys_get_temp_dir;
 use function tempnam;
 use function unlink;
@@ -215,21 +214,17 @@ final class ClusterPackageExecutionTest extends TestCase
 
     public function testSymfonyPolyfillPhp84OnPhp81(): void
     {
-        if (PHP_VERSION_ID >= 80400) {
-            $this->markTestSkipped('Polyfill functions are native on PHP 8.4+.');
-        }
-
         $this->assertSame(3, array_find([1, 2, 3], static fn (int $v): bool => $v > 2));
         $this->assertNull(array_find([1, 2, 3], static fn (int $v): bool => $v > 9));
         $this->assertTrue(array_any([1, 2, 3], static fn (int $v): bool => $v === 2));
         $this->assertFalse(array_all([1, 2, 3], static fn (int $v): bool => $v > 2));
         $this->assertSame(8.0, fpow(2.0, 3.0));
-        $this->assertSame('foo', mb_trim(" \tfoo\n "));
-        $this->assertSame('abc', mb_trim('abc', ''));
+        $this->assertSame('foo', Php84::mb_trim(" \tfoo\n "));
+        $this->assertSame('abc', Php84::mb_trim('abc', ''));
         $this->assertSame(['3', '1'], bcdivmod('10', '3'));
 
         try {
-            grapheme_str_split('ab', 0);
+            Php84::grapheme_str_split('ab', 0);
             $this->fail('Expected ValueError for grapheme_str_split length 0.');
         } catch (\ValueError) {
         }
