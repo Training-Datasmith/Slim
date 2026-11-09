@@ -220,13 +220,18 @@ final class ClusterPackageExecutionTest extends TestCase
         $this->assertFalse(array_all([1, 2, 3], static fn (int $v): bool => $v > 2));
         $this->assertSame(8.0, fpow(2.0, 3.0));
         $this->assertSame('foo', Php84::mb_trim(" \tfoo\n "));
-        $this->assertSame('abc', Php84::mb_trim('abc', ''));
+        $this->assertSame('é', Php84::mb_trim('é', '', 'ASCII'));
         $this->assertSame(['3', '1'], bcdivmod('10', '3'));
 
         try {
             Php84::grapheme_str_split('ab', 0);
             $this->fail('Expected ValueError for grapheme_str_split length 0.');
-        } catch (\ValueError) {
+        } catch (\ValueError $e) {
+            $this->assertStringEndsWith(
+                '/vendor/symfony/polyfill-php84/Php84.php',
+                $e->getFile()
+            );
+            $this->assertStringStartsWith('grapheme_str_split():', $e->getMessage());
         }
 
         $polyfillLoaded = file_exists(
